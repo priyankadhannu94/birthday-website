@@ -1,0 +1,909 @@
+﻿ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday to My Bestie! 💖</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Caveat:wght@400..700&family=Dancing+Script:wght@400..700&family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+    <!-- FontAwesome & Canvas Confetti -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        burgundy: {
+                            50: '#FDF8F5',
+                            100: '#F5EAE0',
+                            600: '#8C2942',
+                            700: '#6B2135',
+                            800: '#4A1521',
+                            900: '#1A0B13',
+                        },
+                        cream: '#FDF8F5',
+                        beige: '#F5EAE0',
+                        accentGold: '#E6C594',
+                        coral: '#E07A5F',
+                    },
+                    fontFamily: {
+                        serif: ['Playfair Display', 'serif'],
+                        cursive: ['Dancing Script', 'cursive'],
+                        hand: ['Caveat', 'cursive'],
+                        script: ['Alex Brush', 'cursive'],
+                        sans: ['Montserrat', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #FDF8F5;
+            color: #4A1521;
+            font-family: 'Montserrat', sans-serif;
+            overflow-x: hidden;
+            user-select: none;
+        }
+
+        .font-cursive { font-family: 'Dancing Script', cursive; }
+        .font-hand { font-family: 'Caveat', cursive; }
+        .font-serif { font-family: 'Playfair Display', serif; }
+        .font-script { font-family: 'Alex Brush', cursive; }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #FDF8F5; }
+        ::-webkit-scrollbar-thumb { background: #6B2135; border-radius: 10px; }
+
+        @keyframes floatSlow {
+            0%, 100% { transform: translateY(0px) rotate(-2deg); }
+            50% { transform: translateY(-14px) rotate(3deg); }
+        }
+        .animate-float { animation: floatSlow 4s ease-in-out infinite; }
+        .animate-float-delayed { animation: floatSlow 5s ease-in-out 1.5s infinite; }
+
+        @keyframes flicker {
+            0%, 100% { transform: scale(1) rotate(-1deg); opacity: 0.9; }
+            50% { transform: scale(1.15) rotate(2deg); opacity: 1; filter: drop-shadow(0 0 10px #ffb703); }
+        }
+        .flame-animation { animation: flicker 0.8s infinite ease-in-out; }
+
+        .polaroid {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 10px 25px -5px rgba(74, 21, 33, 0.1), 0 8px 10px -6px rgba(74, 21, 33, 0.05);
+        }
+        .polaroid:hover {
+            transform: translateY(-8px) rotate(1.5deg) scale(1.02);
+            box-shadow: 0 20px 30px -10px rgba(74, 21, 33, 0.2);
+        }
+
+        .polaroid-tape {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%) rotate(-1deg);
+            width: 80px;
+            height: 24px;
+            background: rgba(245, 234, 224, 0.85);
+            border: 1px solid rgba(107, 33, 53, 0.15);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .glass-card {
+            background: rgba(253, 248, 245, 0.88);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(107, 33, 53, 0.12);
+        }
+
+        @keyframes spinSlow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .animate-spin-slow { animation: spinSlow 12s linear infinite; }
+    </style>
+</head>
+<body class="min-h-screen text-burgundy-800">
+
+    <!-- ==================== 1. SECRET PASSCODE LOCK SCREEN ==================== -->
+    <div id="passcode-screen" class="fixed inset-0 z-50 flex items-center justify-center bg-cream p-4">
+        <div class="w-full max-w-sm glass-card rounded-3xl p-8 text-center shadow-2xl border border-burgundy-100">
+            <div class="mb-6 flex justify-center">
+                <div class="w-16 h-16 rounded-full bg-burgundy-100 flex items-center justify-center text-burgundy-700 text-2xl shadow-inner border border-burgundy-600/20">
+                    <i class="fa-solid fa-lock"></i>
+                </div>
+            </div>
+            <h1 class="font-serif text-2xl font-bold text-burgundy-800 mb-1">Happy Birthday</h1>
+            <p class="font-cursive text-2xl text-burgundy-600 mb-6">to my bestie 💖</p>
+            
+            <p class="text-[11px] uppercase tracking-widest text-burgundy-700/80 font-bold mb-4">ENTER OUR SECRET CODE TO OPEN</p>
+            
+            <div class="flex justify-center gap-2 mb-6" id="pin-container">
+                <input type="password" maxlength="1" pattern="[0-9]*" class="pin-input w-11 h-13 text-center text-xl font-bold rounded-xl border border-burgundy-200 bg-white shadow-sm focus:border-burgundy-700 focus:outline-none focus:ring-2 focus:ring-burgundy-200 transition-all" autoFocus>
+                <input type="password" maxlength="1" pattern="[0-9]*" class="pin-input w-11 h-13 text-center text-xl font-bold rounded-xl border border-burgundy-200 bg-white shadow-sm focus:border-burgundy-700 focus:outline-none focus:ring-2 focus:ring-burgundy-200 transition-all">
+                <input type="password" maxlength="1" pattern="[0-9]*" class="pin-input w-11 h-13 text-center text-xl font-bold rounded-xl border border-burgundy-200 bg-white shadow-sm focus:border-burgundy-700 focus:outline-none focus:ring-2 focus:ring-burgundy-200 transition-all">
+                <input type="password" maxlength="1" pattern="[0-9]*" class="pin-input w-11 h-13 text-center text-xl font-bold rounded-xl border border-burgundy-200 bg-white shadow-sm focus:border-burgundy-700 focus:outline-none focus:ring-2 focus:ring-burgundy-200 transition-all">
+                <input type="password" maxlength="1" pattern="[0-9]*" class="pin-input w-11 h-13 text-center text-xl font-bold rounded-xl border border-burgundy-200 bg-white shadow-sm focus:border-burgundy-700 focus:outline-none focus:ring-2 focus:ring-burgundy-200 transition-all">
+                <input type="password" maxlength="1" pattern="[0-9]*" class="pin-input w-11 h-13 text-center text-xl font-bold rounded-xl border border-burgundy-200 bg-white shadow-sm focus:border-burgundy-700 focus:outline-none focus:ring-2 focus:ring-burgundy-200 transition-all">
+            </div>
+
+            <p id="error-msg" class="text-xs text-red-500 min-h-[1.25rem] mb-2 hidden font-medium"></p>
+            <p class="text-xs text-burgundy-600/70 font-serif italic">Hint: Try passcode 'your bd date/month/current age' 💖</p>
+            
+            <div class="mt-6 flex justify-center items-center gap-2 text-burgundy-700 text-sm opacity-60">
+                <span>💖</span>
+                <span>✨</span>
+                <span>💖</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== 2. ANIMATED INTRO SCREEN ==================== -->
+    <div id="intro-screen" class="fixed inset-0 z-40 bg-burgundy-900 text-cream flex flex-col items-center justify-center transition-opacity duration-1000 hidden">
+        <canvas id="stars-canvas" class="absolute inset-0 pointer-events-none"></canvas>
+
+        <div class="relative z-10 text-center p-6 space-y-4 max-w-md">
+            <p id="intro-step1" class="font-hand text-3xl text-beige opacity-0 transition-opacity duration-1000">Someone special was born...</p>
+            <p id="intro-step2" class="font-serif italic text-lg text-accentGold/90 opacity-0 transition-opacity duration-1000">Loading memories...</p>
+            <p id="intro-step3" class="font-serif italic text-lg text-accentGold/90 opacity-0 transition-opacity duration-1000">Collecting smiles & laughter...</p>
+            
+            <h1 id="intro-main-title" class="font-cursive text-5xl md:text-6xl text-beige font-bold opacity-0 transition-all duration-1000 transform translate-y-4 pt-4">
+                HAPPY BIRTHDAY,<br/>MY BESTIE! 💖
+            </h1>
+        </div>
+    </div>
+
+    <!-- ==================== MAIN CONTENT CONTAINER ==================== -->
+    <main id="main-content" class="opacity-0 transition-opacity duration-1000 hidden pb-28">
+
+        <!-- ==================== 3. BIRTHDAY BANNER & HERO HEADER ==================== -->
+        <section class="relative pt-12 pb-10 px-4 text-center overflow-hidden">
+            <div class="max-w-xl mx-auto space-y-3">
+                <span class="inline-block px-4 py-1.5 rounded-full bg-burgundy-100 text-burgundy-700 text-xs font-bold tracking-wider uppercase mb-2 border border-burgundy-200">POV: TODAY IS YOUR BESTIE'S BIRTHDAY 💖</span>
+                <h1 class="font-cursive text-5xl md:text-6xl text-burgundy-800 font-bold">Happy Birthday, My Bestie! 💖</h1>
+                <p class="font-serif italic text-burgundy-700 text-lg">To the partner-in-crime who makes life a hundred times brighter ✨</p>
+                
+                <button id="open-letter-btn" class="mt-4 px-7 py-3 bg-burgundy-700 hover:bg-burgundy-800 text-cream rounded-full shadow-lg transition-transform active:scale-95 flex items-center gap-2 mx-auto text-sm font-semibold">
+                    <i class="fa-solid fa-envelope-open-text"></i> Open Digital Friendship Letter
+                </button>
+            </div>
+        </section>
+
+        <!-- ==================== 4. MEMORY BALLOONS SECTION ==================== -->
+        <section class="py-12 px-4 relative max-w-4xl mx-auto">
+            <div class="text-center mb-8">
+                <h2 class="font-cursive text-4xl text-burgundy-800 font-bold">Memory Balloons</h2>
+                <p class="font-hand text-2xl text-burgundy-700">Click each balloon to reveal a sweet memory 💖</p>
+            </div>
+
+            <div class="flex flex-wrap justify-center items-center gap-6 md:gap-10 py-6">
+                <!-- Balloon 1 -->
+                <div onclick="openBalloonModal(1)" class="balloon-item cursor-pointer animate-float flex flex-col items-center">
+                    <div class="w-20 h-26 md:w-24 md:h-32 rounded-full bg-gradient-to-b from-burgundy-600 to-burgundy-800 shadow-xl flex items-center justify-center relative text-3xl text-amber-200 hover:scale-110 transition-transform">
+
+                        🧸
+
+
+
+                        <div class="absolute -bottom-1 w-3 h-3 bg-burgundy-800 rotate-45 rounded-sm"></div>
+                    </div>
+                    <div class="w-0.5 h-16 bg-burgundy-300 border-dashed border-l border-burgundy-400"></div>
+                </div>
+
+                <!-- Balloon 2 -->
+                <div onclick="openBalloonModal(2)" class="balloon-item cursor-pointer animate-float-delayed flex flex-col items-center">
+                    <div class="w-20 h-26 md:w-24 md:h-32 rounded-full bg-gradient-to-b from-burgundy-700 to-burgundy-900 shadow-xl flex items-center justify-center relative text-3xl text-red-200 hover:scale-110 transition-transform">
+                        🎀
+                        <div class="absolute -bottom-1 w-3 h-3 bg-burgundy-900 rotate-45 rounded-sm"></div>
+                    </div>
+                    <div class="w-0.5 h-16 bg-burgundy-300 border-dashed border-l border-burgundy-400"></div>
+                </div>
+
+                <!-- Balloon 3 -->
+                <div onclick="openBalloonModal(3)" class="balloon-item cursor-pointer animate-float flex flex-col items-center">
+                    <div class="w-20 h-26 md:w-24 md:h-32 rounded-full bg-gradient-to-b from-burgundy-600 to-burgundy-800 shadow-xl flex items-center justify-center relative text-3xl hover:scale-110 transition-transform">
+                        💖
+                        <div class="absolute -bottom-1 w-3 h-3 bg-burgundy-800 rotate-45 rounded-sm"></div>
+                    </div>
+                    <div class="w-0.5 h-16 bg-burgundy-300 border-dashed border-l border-burgundy-400"></div>
+                </div>
+
+                <!-- Balloon 4 -->
+                <div onclick="openBalloonModal(4)" class="balloon-item cursor-pointer animate-float-delayed flex flex-col items-center">
+                    <div class="w-20 h-26 md:w-24 md:h-32 rounded-full bg-gradient-to-b from-burgundy-700 to-burgundy-900 shadow-xl flex items-center justify-center relative text-3xl hover:scale-110 transition-transform">
+                        ✨
+                        <div class="absolute -bottom-1 w-3 h-3 bg-burgundy-900 rotate-45 rounded-sm"></div>
+                    </div>
+                    <div class="w-0.5 h-16 bg-burgundy-300 border-dashed border-l border-burgundy-400"></div>
+                </div>
+
+                <!-- Balloon 5 -->
+                <div onclick="openBalloonModal(5)" class="balloon-item cursor-pointer animate-float flex flex-col items-center">
+                    <div class="w-20 h-26 md:w-24 md:h-32 rounded-full bg-gradient-to-b from-burgundy-600 to-burgundy-800 shadow-xl flex items-center justify-center relative text-3xl hover:scale-110 transition-transform">
+                        🌷
+                        <div class="absolute -bottom-1 w-3 h-3 bg-burgundy-800 rotate-45 rounded-sm"></div>
+                    </div>
+                    <div class="w-0.5 h-16 bg-burgundy-300 border-dashed border-l border-burgundy-400"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== 5. INTERACTIVE BIRTHDAY CAKE ==================== -->
+        <section class="py-12 px-4 max-w-xl mx-auto text-center">
+            <div class="mb-6">
+                <h2 class="font-cursive text-4xl text-burgundy-800 font-bold">Make a Wish</h2>
+                <p class="font-hand text-2xl text-burgundy-700">Blow out or click all 5 candles ✨</p>
+            </div>
+
+            <div class="glass-card rounded-3xl p-8 border border-burgundy-100 shadow-xl relative flex flex-col items-center">
+                
+                <div class="flex justify-center gap-4 mb-2 z-10">
+                    <div onclick="blowCandle(this)" class="candle group cursor-pointer flex flex-col items-center">
+                        <div class="flame flame-animation w-3.5 h-6 bg-amber-400 rounded-full shadow-[0_0_12px_#ffb703]"></div>
+                        <div class="w-2.5 h-12 bg-gradient-to-b from-amber-100 to-amber-200 rounded-t-sm shadow-sm border-l border-amber-300"></div>
+                    </div>
+                    <div onclick="blowCandle(this)" class="candle group cursor-pointer flex flex-col items-center">
+                        <div class="flame flame-animation w-3.5 h-6 bg-amber-400 rounded-full shadow-[0_0_12px_#ffb703]"></div>
+                        <div class="w-2.5 h-12 bg-gradient-to-b from-pink-100 to-pink-200 rounded-t-sm shadow-sm border-l border-pink-300"></div>
+                    </div>
+                    <div onclick="blowCandle(this)" class="candle group cursor-pointer flex flex-col items-center">
+                        <div class="flame flame-animation w-3.5 h-6 bg-amber-400 rounded-full shadow-[0_0_12px_#ffb703]"></div>
+                        <div class="w-2.5 h-12 bg-gradient-to-b from-cream to-white rounded-t-sm shadow-sm border-l border-gray-200"></div>
+                    </div>
+                    <div onclick="blowCandle(this)" class="candle group cursor-pointer flex flex-col items-center">
+                        <div class="flame flame-animation w-3.5 h-6 bg-amber-400 rounded-full shadow-[0_0_12px_#ffb703]"></div>
+                        <div class="w-2.5 h-12 bg-gradient-to-b from-pink-100 to-pink-200 rounded-t-sm shadow-sm border-l border-pink-300"></div>
+                    </div>
+                    <div onclick="blowCandle(this)" class="candle group cursor-pointer flex flex-col items-center">
+                        <div class="flame flame-animation w-3.5 h-6 bg-amber-400 rounded-full shadow-[0_0_12px_#ffb703]"></div>
+                        <div class="w-2.5 h-12 bg-gradient-to-b from-amber-100 to-amber-200 rounded-t-sm shadow-sm border-l border-amber-300"></div>
+                    </div>
+                </div>
+
+                <div class="w-48 h-14 bg-burgundy-700 rounded-t-2xl relative shadow-md flex items-center justify-center">
+                    <div class="absolute top-0 inset-x-0 h-3 bg-burgundy-600 rounded-t-2xl"></div>
+                    <span class="text-amber-200 text-xs tracking-widest font-serif uppercase opacity-90 font-bold">BEST FRIEND FOREVER</span>
+                </div>
+                <div class="w-64 h-20 bg-burgundy-800 rounded-t-2xl relative shadow-lg flex items-center justify-center border-t-2 border-burgundy-600">
+                    <div class="flex gap-4 text-beige/50 text-xs">
+                        <span>✨</span><span>💖</span><span>✨</span><span>💖</span><span>✨</span>
+                    </div>
+                </div>
+                <div class="w-72 h-4 bg-amber-900/20 rounded-full shadow-inner"></div>
+
+                <div id="wish-note" class="mt-6 p-4 rounded-xl bg-burgundy-50 border border-burgundy-200 hidden transform transition-all duration-500 scale-95">
+                    <h3 class="font-cursive text-2xl text-burgundy-800 font-bold">Wish Unlocked! ✨</h3>
+                    <p class="font-serif italic text-burgundy-700 text-sm mt-1">"May all your wildest dreams come true today and every single day! Besties forever 💖"</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== 6. MYSTERY GIFTS MINI-GAME ==================== -->
+        <section class="py-12 px-4 max-w-2xl mx-auto text-center">
+            <div class="mb-6">
+                <h2 class="font-cursive text-4xl text-burgundy-800 font-bold">Mystery Gifts</h2>
+                <p class="font-hand text-2xl text-burgundy-700">Find all hidden gifts 🎁</p>
+                <div class="inline-block mt-2 px-5 py-1.5 rounded-full bg-burgundy-100 text-burgundy-800 font-bold text-sm border border-burgundy-200">
+                    <span id="gifts-found-count">0</span>/5 gifts found
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-5 gap-3">
+                <div onclick="openGift(1, this)" class="gift-box glass-card p-4 rounded-2xl cursor-pointer hover:scale-105 transition-all flex flex-col items-center justify-center min-h-[120px] border border-burgundy-100">
+                    <div class="text-3xl mb-1">🌷</div>
+                    <span class="text-xs font-bold text-burgundy-700">surprise</span>
+                </div>
+
+                <div onclick="openGift(2, this)" class="gift-box glass-card p-4 rounded-2xl cursor-pointer hover:scale-105 transition-all flex flex-col items-center justify-center min-h-[120px] border border-burgundy-100">
+                    <div class="text-3xl mb-1">📦</div>
+                    <span class="text-xs font-bold text-burgundy-700">Box of Love</span>
+                </div>
+ 
+                <div onclick="openGift(3, this)" class="gift-box glass-card p-4 rounded-2xl cursor-pointer hover:scale-105 transition-all flex flex-col items-center justify-center min-h-[120px] border border-burgundy-100">
+                    <div class="text-3xl mb-1">🤗</div>
+                    <span class="text-xs font-bold text-burgundy-700">Virtual Hugs</span>
+                </div>
+
+                <div onclick="openGift(4, this)" class="gift-box glass-card p-4 rounded-2xl cursor-pointer hover:scale-105 transition-all flex flex-col items-center justify-center min-h-[120px] border border-burgundy-100">
+                    <div class="text-3xl mb-1">🎀</div>
+                    <span class="text-xs font-bold text-burgundy-700">Bestie Pass</span>
+                </div>
+
+                <div onclick="openGift(5, this)" class="gift-box glass-card p-4 rounded-2xl cursor-pointer hover:scale-105 transition-all flex flex-col items-center justify-center min-h-[120px] border border-burgundy-100 col-span-2 md:col-span-1">
+                    <div class="text-3xl mb-1">🍕</div>
+                    <span class="text-xs font-bold text-burgundy-700">Treat Coupon</span>
+                </div>
+            </div>
+        </section>
+
+        
+        <!-- ==================== 7. DIAMOND COLLECTOR GAME ==================== -->
+        <section class="py-12 px-4 max-w-xl mx-auto text-center">
+            <div class="mb-4">
+                <h2 class="font-cursive text-4xl text-burgundy-800 font-bold">Diamond Collector</h2>
+                <p class="font-hand text-2xl text-burgundy-700">Collect 20 diamonds to unlock secret 💎</p>
+                <div class="inline-block mt-2 px-5 py-1.5 rounded-full bg-burgundy-700 text-cream font-bold text-sm shadow">
+                    <span id="diamond-counter">0</span>/20 diamonds
+                </div>
+            </div>
+
+            <div id="diamond-game-box" class="relative w-full h-72 bg-burgundy-900 rounded-3xl overflow-hidden border-2 border-burgundy-700 shadow-2xl flex items-center justify-center">
+                <div id="game-placeholder" class="text-center p-4">
+                    <p class="text-beige/80 text-sm font-serif italic mb-3">Tap falling diamonds & sparkles!</p>
+                    <button onclick="startDiamondGame()" class="px-6 py-2.5 rounded-full bg-burgundy-600 hover:bg-burgundy-500 text-white text-xs uppercase tracking-wider font-bold transition-transform active:scale-95 shadow">Start Game</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== 8. POLAROID MEMORY GALLERY ==================== -->
+        <section class="py-12 px-4 max-w-5xl mx-auto">
+            <div class="text-center mb-10">
+                <h2 class="font-cursive text-4xl text-burgundy-800 font-bold">Memory Polaroid Gallery</h2>
+                <p class="font-hand text-2xl text-burgundy-700">Hover & click to open memory lightboxes ✨</p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 px-4">
+                <!-- Polaroid 1 -->
+                <div class="polaroid relative bg-white p-4 pt-6 rounded-sm shadow-md cursor-pointer border border-burgundy-100" onclick="viewPhotoModal('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWRG7aada8hZToUfSb4pXBofrMR6IHj2CocJXvywyCCk8zBTSDkZPSjNM&s=10', 'A soft memory wrapped in love.')">
+              
+                    <div class="polaroid-tape"></div>
+                    <div class="h-64 overflow-hidden bg-burgundy-50">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWRG7aada8hZToUfSb4pXBofrMR6IHj2CocJXvywyCCk8zBTSDkZPSjNM&s=10" alt="Bestie Memory" class="w-full h-full object-cover">
+                    </div>
+                    <div class="pt-4 text-center">
+                        <p class="font-hand text-2xl font-bold text-burgundy-800">Every memory with you is a treasure 💖</p>
+                    </div>
+                </div>
+
+                <!-- Polaroid 2 -->
+                <div class="polaroid relative bg-white p-4 pt-6 rounded-sm shadow-md cursor-pointer border border-burgundy-100" onclick="viewPhotoModal('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTGCFiDEjiQ46qxgESxU2ckqcu5ocaPLUSiRRvbyozzXObgt1YCgPJySiA&s=10', 'Laughter that brightens every single day.')">
+                    <div class="polaroid-tape"></div>
+                    <div class="h-64 overflow-hidden bg-burgundy-50">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTGCFiDEjiQ46qxgESxU2ckqcu5ocaPLUSiRRvbyozzXObgt1YCgPJySiA&s=10" alt="Bestie Memory" class="w-full h-full object-cover">
+                    </div>
+                    <div class="pt-4 text-center">
+                        <p class="font-hand text-2xl font-bold text-burgundy-800">Crazy adventures & endless smiles ✨</p>
+                    </div>
+                </div>
+
+                <!-- Polaroid 3 -->
+                <div class="polaroid relative bg-white p-4 pt-6 rounded-sm shadow-md cursor-pointer border border-burgundy-100 sm:col-span-2 md:col-span-1" onclick="viewPhotoModal('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdYDoXlNbrXkgdKbDpsGBITI9Dfp0Ja-WCpb0QiXdMREQTjuNIQZKHVWs&s=10', 'Unstoppable duo through thick and thin.')">
+                    <div class="polaroid-tape"></div>
+                    <div class="h-64 overflow-hidden bg-burgundy-50">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdYDoXlNbrXkgdKbDpsGBITI9Dfp0Ja-WCpb0QiXdMREQTjuNIQZKHVWs&s=10" alt="Bestie Memory" class="w-full h-full object-cover">
+                    </div>
+                    <div class="pt-4 text-center">
+                        <p class="font-hand text-2xl font-bold text-burgundy-800">Unstoppable Duo Forever 💖</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== 9. OUR STORY TIMELINE ==================== -->
+        <section class="py-12 px-4 max-w-2xl mx-auto">
+            <div class="text-center mb-10">
+                <h2 class="font-cursive text-4xl text-burgundy-800 font-bold">Our Story Timeline</h2>
+                <p class="font-hand text-2xl text-burgundy-700">A best friend journey worth remembering ✨</p>
+            </div>
+
+            <div class="relative border-l-2 border-dashed border-burgundy-300 ml-6 md:ml-10 space-y-8">
+                <div class="relative pl-8">
+                    <div class="absolute -left-[17px] top-0 w-8 h-8 rounded-full bg-burgundy-100 border-2 border-burgundy-700 flex items-center justify-center text-burgundy-700 text-xs font-bold">
+                        💖
+                    </div>
+                    <div class="glass-card p-5 rounded-2xl shadow-sm border border-burgundy-100">
+                        <span class="font-serif text-2xl font-bold text-burgundy-800">2010💖</span>
+                        <h4 class="font-cursive text-xl text-burgundy-600 mb-2">First Meeting</h4>
+                        <p class="font-serif italic text-xs md:text-sm text-burgundy-700 leading-relaxed">
+                            "The universe decided we needed each other. The very first moment felt like meeting a soulmate friend!"
+                        </p>
+                    </div>
+                </div>
+
+                <div class="relative pl-8">
+                    <div class="absolute -left-[17px] top-0 w-8 h-8 rounded-full bg-burgundy-100 border-2 border-burgundy-700 flex items-center justify-center text-burgundy-700 text-xs font-bold">
+                        📸
+                    </div>
+                    <div class="glass-card p-5 rounded-2xl shadow-sm border border-burgundy-100">
+                        <span class="font-serif text-2xl font-bold text-burgundy-800">2024 📸</span>
+                        <h4 class="font-cursive text-xl text-burgundy-600 mb-2">Crazy Adventures</h4>
+                        <p class="font-serif italic text-xs md:text-sm text-burgundy-700 leading-relaxed">
+                            "Insta chats, secrets, endless caring , and memories we will laugh about forever!"
+                        </p>
+                    </div>
+                </div>
+
+                <div class="relative pl-8">
+                    <div class="absolute -left-[17px] top-0 w-8 h-8 rounded-full bg-burgundy-100 border-2 border-burgundy-700 flex items-center justify-center text-burgundy-700 text-xs font-bold">
+                        ⚡
+                    </div>
+                    <div class="glass-card p-5 rounded-2xl shadow-sm border border-burgundy-100">
+                        <span class="font-serif text-2xl font-bold text-burgundy-800">2025 ⚡</span>
+                        <h4 class="font-cursive text-xl text-burgundy-600 mb-2">Unstoppable Duo</h4>
+                        <p class="font-serif italic text-xs md:text-sm text-burgundy-700 leading-relaxed">
+                            "Facing every goal together, supporting each other through every win and tough day."
+                        </p>
+                    </div>
+                </div>
+
+                <div class="relative pl-8">
+                    <div class="absolute -left-[17px] top-0 w-8 h-8 rounded-full bg-burgundy-100 border-2 border-burgundy-700 flex items-center justify-center text-burgundy-700 text-xs font-bold">
+                        🎂
+                    </div>
+                    <div class="glass-card p-5 rounded-2xl shadow-sm border border-burgundy-100">
+                        <span class="font-serif text-2xl font-bold text-burgundy-800">2026 Today 💖</span>
+                        <h4 class="font-cursive text-xl text-burgundy-600 mb-2">Celebrating YOU!</h4>
+                        <p class="font-serif italic text-xs md:text-sm text-burgundy-700 leading-relaxed">
+                            "Happy Birthday to the most irreplaceable person in my life!"
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== 10. OUR CONSTELLATION ==================== -->
+        <section class="py-12 px-4 max-w-2xl mx-auto text-center">
+            <div class="mb-6">
+                <h2 class="font-cursive text-4xl text-burgundy-800 font-bold">Our Constellation</h2>
+                <p class="font-hand text-2xl text-burgundy-700">Click the heart stars to unlock friendship quotes ⭐</p>
+            </div>
+
+            <div class="relative w-full h-80 bg-burgundy-950 rounded-3xl p-4 overflow-hidden border border-burgundy-800 shadow-2xl">
+                <canvas id="constellation-canvas" class="absolute inset-0 w-full h-full cursor-pointer"></canvas>
+                <div id="star-message" class="absolute bottom-4 inset-x-4 bg-burgundy-900/90 text-beige p-3 rounded-xl text-xs font-serif italic border border-burgundy-700 backdrop-blur opacity-0 transition-opacity duration-300">
+                    Click any star node in the heart constellation...
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== 11. FINAL WISH BANNER ==================== -->
+        <section class="py-16 px-4 text-center max-w-xl mx-auto">
+            <div class="p-8 rounded-3xl bg-burgundy-800 text-cream shadow-2xl space-y-4">
+                <h2 class="font-cursive text-4xl text-beige">Happy Birthday Bestie 💖</h2>
+                <p class="font-serif italic text-sm leading-relaxed text-beige/90">
+                    Thank you for existing.<br/>
+                    Thank you for every smile, every laugh, every beautiful memory.<br/>
+                    You truly make this world brighter ✨
+                </p>
+                <div class="pt-4">
+                    <span class="text-xs uppercase tracking-widest text-beige/70 font-bold">BEST FRIENDS FOREVER</span>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Music Player Widget -->
+<div class="bg-pink-100 rounded-xl p-4 flex items-center justify-between shadow-inner my-4 max-w-sm mx-auto">
+    <!-- Song Info -->
+    <div class="text-left overflow-hidden pr-2">
+        <p id="current-song-title" class="text-sm font-bold text-pink-800 truncate">Aesthetic Chill Vibe</p>
+        <p id="current-song-artist" class="text-xs text-pink-500 truncate">SoundHelix</p>
+    </div>
+
+    <!-- Controls -->
+    <div class="flex items-center space-x-3">
+        <button onclick="prevSong()" class="w-8 h-8 rounded-full bg-white text-pink-600 flex items-center justify-center shadow hover:bg-pink-50">
+            <i class="fa-solid fa-backward text-xs"></i>
+        </button>
+        
+        <button id="play-pause-btn" onclick="togglePlay()" class="w-10 h-10 rounded-full bg-pink-600 text-white flex items-center justify-center shadow-md hover:bg-pink-700">
+            <i class="fa-solid fa-play text-xs"></i>
+        </button>
+
+        <button onclick="nextSong()" class="w-8 h-8 rounded-full bg-white text-pink-600 flex items-center justify-center shadow hover:bg-pink-50">
+            <i class="fa-solid fa-forward text-xs"></i>
+        </button>
+    </div>
+</div>
+
+<!-- Background Audio Tag -->
+<audio id="bg-audio" autoplay loop preload="auto">
+    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-10.mp3" type="audio/mpeg">
+</audio>
+
+    <!-- ==================== MODALS ==================== -->
+
+    <!-- Digital Friendship Letter Modal -->
+    <div id="letter-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+        <div class="w-full max-w-md bg-[#FAF4EC] rounded-2xl p-6 shadow-2xl border border-burgundy-200 relative">
+            <div class="w-12 h-1 bg-burgundy-300 rounded-full mx-auto mb-4"></div>
+            <div class="text-center mb-4">
+                <span class="text-2xl">💖</span>
+                <h3 class="font-cursive text-3xl text-burgundy-800 font-bold">My Dearest Bestie...</h3>
+            </div>
+            <div class="space-y-3 font-hand text-xl text-burgundy-900 leading-relaxed max-h-[60vh] overflow-y-auto px-2 border-t border-b border-burgundy-200/60 py-3">
+                <p>Happy Birthday to my favourite person on this planet!</p>
+                <p>Thank you for existing, for listening to all my random rants, for laughing at the silly things, and for always having my back.</p>
+                <p>You make every single day brighter, happier, and full of sunshine. I am so lucky to call you my best friend!</p>
+                <p class="text-right font-bold pt-2">— Yours Forever Bestie 💖</p>
+            </div>
+            <button onclick="closeModal('letter-modal')" class="mt-4 w-full py-2.5 rounded-xl border border-burgundy-300 text-burgundy-800 text-xs font-bold uppercase tracking-wider hover:bg-burgundy-100 transition">
+                Close Letter ✕
+            </button>
+        </div>
+    </div>
+
+    <!-- Memory Balloon Popup Modal -->
+    <div id="balloon-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+        <div class="w-full max-w-xs bg-white rounded-2xl p-5 text-center shadow-2xl border border-burgundy-100">
+            <div id="balloon-modal-icon" class="text-4xl mb-2">🧸</div>
+            <h4 id="balloon-modal-title" class="font-cursive text-2xl text-burgundy-800 font-bold mb-1">A Soft Memory</h4>
+            <p id="balloon-modal-desc" class="font-serif italic text-xs text-burgundy-600 mb-4">"Wrapped in love and warmth."</p>
+            <button onclick="closeModal('balloon-modal')" class="px-6 py-2 rounded-full bg-burgundy-700 text-cream text-xs font-semibold shadow hover:bg-burgundy-800">Close</button>
+        </div>
+    </div>
+
+    <!-- Photo Story Lightbox Modal -->
+    <div id="photo-modal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+        <div class="w-full max-w-sm bg-white p-4 rounded-2xl shadow-2xl text-center">
+            <img id="modal-img" src="" alt="Photo" class="w-full h-72 object-cover rounded-xl mb-4">
+            <p id="modal-caption" class="font-cursive text-2xl text-burgundy-800 mb-3"></p>
+            <button onclick="closeModal('photo-modal')" class="px-6 py-2 rounded-full bg-burgundy-700 text-cream text-xs font-medium">Close Lightbox</button>
+        </div>
+    </div>
+
+    <!-- Mystery Gift Modal -->
+    <div id="gift-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+        <div class="w-full max-w-xs glass-card p-6 rounded-3xl text-center shadow-2xl border border-burgundy-100">
+            <div id="gift-icon" class="text-4xl mb-2">🌷</div>
+            <h3 id="gift-title" class="font-cursive text-3xl text-burgundy-800 font-bold mb-1">Mystery Gift Unlocked 💖</h3>
+            <p id="gift-text" class="font-serif italic text-xs text-burgundy-700 mb-4">""</p>
+            <button onclick="closeModal('gift-modal')" class="w-full py-2.5 rounded-full bg-burgundy-700 text-cream text-xs font-bold">Opened With Love 💖</button>
+        </div>
+    </div>
+
+    <!-- AUDIO/GAME JAVASCRIPT Mechanics -->
+    <script>
+        const CORRECT_PIN = "011119";
+        const pinInputs = document.querySelectorAll('.pin-input');
+        const errorMsg = document.getElementById('error-msg');
+
+        pinInputs.forEach((input, index) => {
+            input.addEventListener('input', (e) => {
+                if (e.target.value.length === 1 && index < pinInputs.length - 1) {
+                    pinInputs[index + 1].focus();
+                }
+                checkPin();
+            });
+
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Backspace' && !e.target.value && index > 0) {
+                    pinInputs[index - 1].focus();
+                }
+            });
+        });
+
+        function checkPin() {
+            let entered = "";
+            pinInputs.forEach(i => entered += i.value);
+            if (entered.length === 6) {
+                if (entered === CORRECT_PIN) {
+                    unlockApp();
+                } else {
+                    errorMsg.innerText = "Incorrect code. Try '123456' 💖";
+                    errorMsg.classList.remove('hidden');
+                    pinInputs.forEach(i => i.value = "");
+                    pinInputs[0].focus();
+                }
+            }
+        }
+
+        function unlockApp() {
+            document.getElementById('passcode-screen').classList.add('hidden');
+            document.getElementById('intro-screen').classList.remove('hidden');
+            startStarCanvas();
+            runIntroSequence();
+        }
+
+        function runIntroSequence() {
+            setTimeout(() => document.getElementById('intro-step1').classList.remove('opacity-0'), 500);
+            setTimeout(() => document.getElementById('intro-step2').classList.remove('opacity-0'), 1600);
+            setTimeout(() => document.getElementById('intro-step3').classList.remove('opacity-0'), 2700);
+            setTimeout(() => {
+                const title = document.getElementById('intro-main-title');
+                title.classList.remove('opacity-0', 'translate-y-4');
+                triggerConfetti();
+            }, 3800);
+
+            setTimeout(() => {
+                const intro = document.getElementById('intro-screen');
+                intro.classList.add('opacity-0');
+                setTimeout(() => {
+                    intro.classList.add('hidden');
+                    const main = document.getElementById('main-content');
+                    main.classList.remove('hidden');
+                    setTimeout(() => main.classList.remove('opacity-0'), 50);
+                    initConstellationCanvas();
+                }, 1000);
+            }, 6200);
+        }
+
+        function startStarCanvas() {
+            const canvas = document.getElementById('stars-canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            const stars = Array.from({length: 80}, () => ({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                r: Math.random() * 2,
+                alpha: Math.random()
+            }));
+
+            function draw() {
+                ctx.clearRect(0,0,canvas.width,canvas.height);
+                ctx.fillStyle = '#ffffff';
+                stars.forEach(s => {
+                    ctx.globalAlpha = Math.abs(Math.sin(Date.now() * 0.001 + s.x));
+                    ctx.beginPath();
+                    ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+                    ctx.fill();
+                });
+                requestAnimationFrame(draw);
+            }
+            draw();
+        }
+
+        const balloonData = {
+            1: { icon: '🧸', title: 'Teddy Hugs', desc: 'Sending you softest warmest bestie care !' },
+            2: { icon: '🎀', title: 'Sweet Memories', desc: 'Every memory tied together with pure happiness.' },
+            3: { icon: '💖', title: 'Bestie Love', desc: 'Lucky to have a best friend as sweet as you.' },
+            4: { icon: '✨', title: 'Wish Granted', desc: 'May your year sparkle with joy and triumphs.' },
+            5: { icon: '🌷', title: 'Fresh Blooms', desc: 'You bring brightness and spring everywhere you go.' }
+        };
+
+        function openBalloonModal(id) {
+            const item = balloonData[id];
+            document.getElementById('balloon-modal-icon').innerText = item.icon;
+            document.getElementById('balloon-modal-title').innerText = item.title;
+            document.getElementById('balloon-modal-desc').innerText = `"${item.desc}"`;
+            document.getElementById('balloon-modal').classList.remove('hidden');
+            triggerConfetti();
+        }
+
+        function viewPhotoModal(imgSrc, caption) {
+            document.getElementById('modal-img').src = imgSrc;
+            document.getElementById('modal-caption').innerText = caption;
+            document.getElementById('photo-modal').classList.remove('hidden');
+        }
+
+        document.getElementById('open-letter-btn').onclick = () => {
+            document.getElementById('letter-modal').classList.remove('hidden');
+        };
+
+        function closeModal(id) {
+            document.getElementById(id).classList.add('hidden');
+        }
+
+        let candlesBlown = 0;
+        function blowCandle(el) {
+            const flame = el.querySelector('.flame');
+            if (flame && !flame.classList.contains('hidden')) {
+                flame.classList.add('hidden');
+                candlesBlown++;
+                if (candlesBlown === 5) {
+                    document.getElementById('wish-note').classList.remove('hidden');
+                    setTimeout(() => document.getElementById('wish-note').classList.remove('scale-95'), 50);
+                    triggerConfetti();
+                }
+            }
+        }
+
+        let giftsFound = 0;
+        const giftRewards = [
+            { icon: '🌷', text: "A lovely football just for you! 🌷" },
+            { icon: '📦', text: "A virtual box filled with cares, jokes, and bestie love! 💖" },
+            { icon: '🤗', text: "Unlimited warm bear support whenever you need them! 🤗" },
+            { icon: '🎀', text: "VIP Bestie Pass: Free caring & treats for life! ☕" },
+            { icon: '🍕', text: "Treat Coupon: Redeemable for Arun Icecream! 🍕" }
+        ];
+
+        function openGift(index, el) {
+            if (el.dataset.opened) return;
+            el.dataset.opened = "true";
+            el.style.opacity = "0.5";
+            giftsFound++;
+            document.getElementById('gifts-found-count').innerText = giftsFound;
+            document.getElementById('gift-icon').innerText = giftRewards[index - 1].icon;
+            document.getElementById('gift-text').innerText = giftRewards[index - 1].text;
+            document.getElementById('gift-modal').classList.remove('hidden');
+            triggerConfetti();
+        }
+
+        // Diamond Collector Game Mechanics
+        let diamondCount = 0;
+        let gameInterval;
+        function startDiamondGame() {
+            document.getElementById('game-placeholder').classList.add('hidden');
+            const box = document.getElementById('diamond-game-box');
+            
+            if (gameInterval) clearInterval(gameInterval);
+            
+            gameInterval = setInterval(() => {
+                if (diamondCount >= 20) {
+                    clearInterval(gameInterval);
+                    return;
+                }
+                const diamond = document.createElement('div');
+                diamond.innerText = ['💎', '✨', '💠', '🌟'][Math.floor(Math.random() * 4)];
+                diamond.className = 'absolute cursor-pointer text-2xl transition-transform hover:scale-125';
+                diamond.style.left = Math.random() * 85 + '%';
+                diamond.style.bottom = '0px';
+                
+                box.appendChild(diamond);
+
+                let pos = 0;
+                const anim = setInterval(() => {
+                    pos += 2.5;
+                    diamond.style.bottom = pos + 'px';
+                    if (pos > 250) {
+                        clearInterval(anim);
+                        if (box.contains(diamond)) box.removeChild(diamond);
+                    }
+                }, 30);
+
+                diamond.onclick = () => {
+                    diamondCount++;
+                    const counter = document.getElementById('diamond-counter') || document.getElementById('heart-counter');
+                    if(counter) counter.innerText = diamondCount;
+                    clearInterval(anim);
+                    if (box.contains(diamond)) box.removeChild(diamond);
+                    if (diamondCount === 20) {
+                        alert("🎉 Secret Unlocked! Bestie level: 1000%! You collected all 20 diamonds! 💎");
+                        triggerConfetti();
+                    }
+                };
+            }, 700);
+        }
+
+        function initConstellationCanvas() {
+            const canvas = document.getElementById('constellation-canvas');
+            const ctx = canvas.getContext('2d');
+            const rect = canvas.getBoundingClientRect();
+            canvas.width = rect.width;
+            canvas.height = rect.height;
+
+            const heartNodes = [
+                {x: canvas.width * 0.5, y: canvas.height * 0.7, label: 'Best Friends Forever 💖'},
+                {x: canvas.width * 0.3, y: canvas.height * 0.45, label: 'Soulmate Friend ✨'},
+                {x: canvas.width * 0.7, y: canvas.height * 0.45, label: 'Laughter Companion 🌟'},
+                {x: canvas.width * 0.25, y: canvas.height * 0.25, label: 'Partner in Crime 🎀'},
+                {x: canvas.width * 0.75, y: canvas.height * 0.25, label: 'Always There For you/me 💕'},
+                {x: canvas.width * 0.5, y: canvas.height * 0.35, label: 'Unstoppable friendship 🏆'}
+            ];
+
+            function render() {
+                ctx.clearRect(0,0,canvas.width,canvas.height);
+                
+                ctx.strokeStyle = 'rgba(245, 234, 224, 0.35)';
+                ctx.lineWidth = 1.5;
+                ctx.beginPath();
+                ctx.moveTo(heartNodes[0].x, heartNodes[0].y);
+                ctx.lineTo(heartNodes[1].x, heartNodes[1].y);
+                ctx.lineTo(heartNodes[3].x, heartNodes[3].y);
+                ctx.lineTo(heartNodes[5].x, heartNodes[5].y);
+                ctx.lineTo(heartNodes[4].x, heartNodes[4].y);
+                ctx.lineTo(heartNodes[2].x, heartNodes[2].y);
+                ctx.lineTo(heartNodes[0].x, heartNodes[0].y);
+                ctx.stroke();
+
+                heartNodes.forEach(node => {
+                    ctx.fillStyle = '#F5EAE0';
+                    ctx.beginPath();
+                    ctx.arc(node.x, node.y, 6, 0, Math.PI * 2);
+                    ctx.fill();
+
+                    ctx.fillStyle = 'rgba(245, 234, 224, 0.3)';
+                    ctx.beginPath();
+                    ctx.arc(node.x, node.y, 13, 0, Math.PI * 2);
+                    ctx.fill();
+                });
+            }
+
+            render();
+
+            canvas.onclick = (e) => {
+                const clickX = e.offsetX;
+                const clickY = e.offsetY;
+                heartNodes.forEach(node => {
+                    const dist = Math.hypot(node.x - clickX, node.y - clickY);
+                    if (dist < 20) {
+                        const msgBox = document.getElementById('star-message');
+                        msgBox.innerText = `⭐ Heart Constellation Quote: ${node.label}`;
+                        msgBox.classList.remove('opacity-0');
+                        triggerConfetti();
+                     }
+                });
+            };
+        }
+// Website open aanathum screen-la enga click pannalum automatic-a play aaga
+        document.addEventListener('click', function() {
+            const audio = document.getElementById('bg-audio');
+            const btn = document.getElementById('play-pause-btn');
+            
+            if (audio && audio.paused) {
+                audio.play().then(() => {
+                    isPlaying = true;
+                    if (btn) btn.innerHTML = '<i class="fa-solid fa-pause text-xs"></i>';
+                }).catch(err => console.log("Autoplay blocked:", err));
+            }
+        }, { once: true });
+
+
+        const playlist = [
+    { 
+        title: "Birthday celebration Track", 
+        artist: "SoundHelix Music", 
+        src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-10.mp3" 
+    },
+    { 
+        title: "Gentle Friendship Piano", 
+        artist: "SoundHelix 2", 
+        src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" 
+    },
+    { 
+        title: "Happy Birthday Melody", 
+        artist: "SoundHelix 3", 
+        src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3" 
+    }
+];
+
+let currentSongIndex = 0;
+let isPlaying = false;
+
+function togglePlay() {
+    const audio = document.getElementById('bg-audio');
+    const btn = document.getElementById('play-pause-btn');
+
+    if (isPlaying) {
+        audio.pause();
+        isPlaying = false;
+        btn.innerHTML = '<i class="fa-solid fa-play text-xs"></i>';
+    } else {
+        audio.play().then(() => {
+            isPlaying = true;
+            btn.innerHTML = '<i class="fa-solid fa-pause text-xs"></i>';
+        }).catch(err => console.log("Playback error:", err));
+    }
+}
+
+function nextSong() {
+    currentSongIndex = (currentSongIndex + 1) % playlist.length;
+    changeSongSource();
+}
+
+function prevSong() {
+    currentSongIndex = (currentSongIndex - 1 + playlist.length) % playlist.length;
+    changeSongSource();
+}
+
+function changeSongSource() {
+    const audio = document.getElementById('bg-audio');
+    audio.src = playlist[currentSongIndex].src;
+    document.getElementById('current-song-title').innerText = playlist[currentSongIndex].title;
+    document.getElementById('current-song-artist').innerText = playlist[currentSongIndex].artist;
+    
+    if (isPlaying) {
+        audio.play();
+    }
+}
+        function triggerConfetti() {
+            if (typeof confetti === 'function') {
+                confetti({
+                    particleCount: 50,
+                    spread: 60,
+                    origin: { y: 0.7 },
+                    colors: ['#6B2135', '#F5EAE0', '#E6C594']
+                });
+            }
+        }
+    </script>
+</body>
+</html>
